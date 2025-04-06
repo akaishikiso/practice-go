@@ -1,0 +1,13 @@
+services:
+  practice-go: # サービス名
+    container_name: practice-go # コンテナ名
+    build: # ビルドに使うDockerファイルのパス
+      context: .
+      dockerfile: ./build/Dockerfile
+    volumes: # マウントディレクトリ
+      - ./practice-go:/go/src/practice-go
+    tty: true # コンテナの永続化
+    env_file: # .envファイル
+      - ./build/.go_.env
+    environment:
+      - TZ=Asia/Tokyo
