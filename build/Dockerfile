@@ -1,9 +1,9 @@
 FROM golang:1.24.2-alpine
 # アップデートとgitのインストール
 RUN apk update && apk add git
-# practice-goディレクトリの作成
-RUN mkdir /go/src/practice-go
+#  backendディレクトリの作成
+RUN mkdir /go/src/backend
 # ワーキングディレクトリの設定
-WORKDIR /go/src/practice-go
+WORKDIR /go/src/backend
 # ホストのファイルをコンテナの作業ディレクトリに移行
-ADD . /go/src/practice-go
+ADD . /go/src/backend

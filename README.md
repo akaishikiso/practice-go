@@ -1,2 +1,3 @@
-# practice-go
-goを勉強するためのアプリ
+# backend
+
+go を勉強するためのアプリ
