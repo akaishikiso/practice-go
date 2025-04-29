@@ -1,19 +1,32 @@
 package main
 
 import (
+	"log"
 	"net/http"
 
-	application "practice-go/backend/app"
-	"practice-go/backend/infrastructure"
-	"practice-go/backend/interfaces"
+	"practice-go/backend/interface/handler"
+	"practice-go/backend/interface/persistence"
+	"practice-go/backend/usecase/menu"
 )
 
 func main() {
-    repo := infrastructure.NewInMemoryTaskRepository()
-    service := application.NewTaskService(repo)
-    handler := interfaces.NewTaskHandler(service)
+	repo := persistence.NewInMemoryMenuRepo()
+	service := &menu.Service{Repo: repo}
+	h := &handler.MenuHandler{Service: service}
 
-    http.HandleFunc("/tasks", handler.GetTasks)
+	http.HandleFunc("/menus", func(w http.ResponseWriter, r *http.Request) {
+		switch r.Method {
+		case "GET":
+			h.GetAll(w, r)
+		case "POST":
+			h.Create(w, r)
+		case "DELETE":
+			h.Delete(w, r)
+		default:
+			http.Error(w, "method not allowed", 405)
+		}
+	})
 
-    http.ListenAndServe(":8080", nil)
+	log.Println("Server running at :8080")
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }
